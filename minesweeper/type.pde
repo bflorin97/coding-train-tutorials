@@ -1,0 +1,6 @@
+
+
+enum CellType {
+  MINE,
+  NUMBER
+}
