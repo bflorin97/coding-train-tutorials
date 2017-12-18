@@ -2,7 +2,7 @@
 
 class Particle extends Physics{
   color c;
-  float size = 8;
+  float size = 6;
   
   Particle(float x, float y, color c) {
     this.c = c;

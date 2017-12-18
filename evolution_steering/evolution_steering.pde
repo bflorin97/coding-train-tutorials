@@ -1,36 +1,30 @@
 
-ArrayList<Vehicle> vehicles;
-ArrayList<Particle> food;
-ArrayList<Particle> poison;
+ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
+ArrayList<Particle> food = new ArrayList<Particle>(); 
+ArrayList<Particle> poison = new ArrayList<Particle>();
 
 int nrfood = 100;
 int nrpoison = 30;
 int nrvehicle = 20;
-float[] nutrition = new float[] {10, -50};
+float[] nutrition = new float[] {10, -90};
 float mutation = 0.2;
 float reproduce = 0.001;
 Vehicle best = null;
 
 void setup() {
-  size(1024, 800);
+  size(600, 600);
   colorMode(RGB);
-
-  vehicles = new ArrayList<Vehicle>();
-  food = new ArrayList<Particle>();
-  poison = new ArrayList<Particle>();
 
   for (int i = 0; i < nrvehicle; i++) {
     vehicles.add(new Vehicle(random(width), random(height)));
   }
-  
+
   best = vehicles.get(0);
 }
 
 void createParticles(ArrayList<Particle> list, int n, color c, float w) {
   for (int i = 0; i < n; i++) {
-    Particle p = new Particle(random(width), random(height), c);
-    p.weight = w;
-    list.add(p);
+    list.add(new Particle(random(width), random(height), c));
   }
 }
 
@@ -52,7 +46,7 @@ void draw() {
 
   if (vehicles.size() == 0) {
     best.health = best.dna[4];
-    vehicles.add(best); 
+    vehicles.add(best);
   }
 
   for (Vehicle v : vehicles) {
@@ -60,12 +54,14 @@ void draw() {
     v.show();
     v.eat(food, 0);
     v.eat(poison, 1);
+    
     if (v.dead()) {
       removed.add(v);
     }
-    Vehicle p = v.clone();
-    if (p != null && vehicles.size() < 5) {
-      added.add(p);
+    if (vehicles.size() < 5) {
+      if (random(1) < reproduce) {
+        added.add(v.clone());
+      }
     }
     if (v.getScore() > score) {
       score = v.getScore(); 
@@ -77,10 +73,10 @@ void draw() {
   stroke(255);
   noFill();
   if (mv != null) {
-    if (best.getScore() < mv.getScore()){
-      best = mv; 
+    if (best.getScore() < mv.getScore()) {
+      best = mv;
     }
-    rect(mv.pos.x - 15, mv.pos.y-15, 30, 30);
+    //rect(mv.pos.x - 15, mv.pos.y-15, 30, 30);
   }
 
   println("Max score :" + score);
@@ -94,4 +90,8 @@ void draw() {
   for (Particle p : poison) {
     p.show();
   }
+}
+
+void mouseClicked() {
+  vehicles.removeAll(vehicles); 
 }

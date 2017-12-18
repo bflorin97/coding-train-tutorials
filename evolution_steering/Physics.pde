@@ -11,10 +11,6 @@ abstract class Physics {
     acc.add(force.div(weight)); 
   }
   
-  void applyForce(PVector force, float w) {
-    acc.add(force.div(w)); 
-  }
-  
   void update() {
     vel.add(acc.mult(dt));
     
